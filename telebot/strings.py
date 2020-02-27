@@ -11,6 +11,6 @@ class Strings:
     )
 
     HELP_MESSAGE = (
-        "Para selecionar o evento de classificação use o comando /event"
+        "Para selecionar o evento de classificação use o comando /event.\n"
         "Consultas podem ser feitas apenas colocando o nome da área desejada."
     )

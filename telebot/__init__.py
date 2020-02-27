@@ -1,15 +1,16 @@
 
 from .bot import init
+import pickle
 
 
 def run_bot():
     init()
-    # print("Okay")
-    # data = load(get_data("inverted_indexes.b"))
-    # print(data)
-    # chat_bot = ChatQualisBot()
-    # df = chat_bot.get_answer('liste journals de fisica que sejam do tema optica')
-    # print(df)
+    
+    #from .qualis_chat.rasa.inv_index import save_inverted_indexes, load_inverted_indexes
+    #data = load_inverted_indexes()
+    #save_inverted_indexes(data)
+
+
 
 
 if __name__ == '__main__':

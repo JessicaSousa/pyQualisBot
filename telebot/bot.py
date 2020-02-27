@@ -50,9 +50,11 @@ def reply_user(update, context):
         "text": update.message.text
     }
     context.user_data[user.id][update.message.message_id] = user_data
-    # Obtém o texto e opções 
-    text, options = get_answer(mid = update.message.message_id, user_data = user_data)
+    # Obtém o texto, opções e sugestões
+    text, options, suggestions = get_answer(mid = update.message.message_id, user_data = user_data)
     update.message.reply_text(text, reply_markup=options, parse_mode="markdown")
+    if suggestions:
+        print("okay")
 
  
 def button(update, context):
@@ -86,6 +88,7 @@ def help(update, context):
 
 
 def init():
+    logger.info("Starting bot")
     # Create the Updater and pass it your bot's token.
     pp = PicklePersistence(filename='conversationbot')
     updater = Updater(os.getenv("TOKEN"), persistence=pp, use_context=True)

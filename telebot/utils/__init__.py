@@ -1,1 +1,0 @@
-from .inv_index import Index

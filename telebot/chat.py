@@ -1,8 +1,5 @@
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 import random, math
-from pyQualis import Search
-
-search = Search()
 from .qualis_chat import ChatQualisBot
 
 
@@ -12,14 +9,16 @@ chat_bot = ChatQualisBot()
 
 def format_search(data, mid, event, index=0):
     text = ""
-    N = data.shape[0]
+    N = len(data)
     last = index + 5 if index + 5 <= N else N
+    text = "*Resultados encontrados*:\n"
     for i in range(index, last):
-        text += f"*ISSN*: {data.iloc[i, 0]}\n"
-        text += f"*Título*: {data.iloc[i, 1]}\n"
-        text += f"*Área de Avaliação*:\n{data.iloc[i, 2]}\n"
-        text += f"*Classificação*: {data.iloc[i, 3]}\n"
-        text += "===============================\n"
+        text += f"{data[i]}\n\n"
+        # if (i < last - 1):
+        #     text += "---\n"
+
+    if N < 5:
+        return text, None
 
     current = index
 
@@ -38,30 +37,14 @@ def format_search(data, mid, event, index=0):
     reply_markup = InlineKeyboardMarkup(keyboard)
     return text, reply_markup
 
-
-# def get_answer2():
-#     from .utils.inv_index import load_inverted_indexes
-#     df = load_inverted_indexes()
-#     print("-----------")
-#     #print(df)
-#     chat_bot.get_answer('liste journals de fisica que sejam do tema optica')
-
 def get_answer(mid, user_data, index=0):
     # realizar consulta
     results = chat_bot.get_answer(user_data["text"])
     text = "Nenhum resultado encontrado."
+    suggestions = None
     if results:
-        N = len(results)
-        text = "*RESULTADOS*:\n"
-        for i in range(N):
-            text += f"{results[i]}\n" 
-
-    return text, None
-
-    # results = search.by_area(user_data["text"])
-    # if results.empty:
-    #    return "Nenhum resultado encontrado.", None
-    # else:
-    #    return format_search(results, mid, user_data["event"], index)
+        text, reply_markup = format_search(results, mid, "quadriênio", index)
+        return text, reply_markup, suggestions
+    return text, None, None
         
     

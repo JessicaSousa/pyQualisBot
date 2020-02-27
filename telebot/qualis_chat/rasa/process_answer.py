@@ -34,9 +34,7 @@ import pickle
 import os
 
 
-# from telebot.utils.inv_index import Index
-
-_ROOT = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '../..', 'data'))
+_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 def get_area_name_correct(area_name,area_model,codes2Name,count_vect,tf_transformer):
     x = count_vect.transform(np.array([area_name]))
@@ -48,7 +46,8 @@ def get_area_name_correct(area_name,area_model,codes2Name,count_vect,tf_transfor
 
 class ChatQualisBot:
     def __init__(self):
-        self.inverted_indexes = pickle.load(open(_ROOT+'/inverted_indexes.b','rb'))
+        filename = "inverted_indexes.b"
+        self.inverted_indexes = pickle.load(open(os.path.join(_ROOT, filename),'rb'))
 
 ############################################  NLU MODEL  ############################################
 
@@ -89,13 +88,13 @@ class ChatQualisBot:
 
         ############################################  CORRECT AREA CLASSIFIER  ############################################
 
-        self.area_model = pickle.load(open(_ROOT+'/../qualis_chat/area_model.b','rb'))
-        self.count_vect = pickle.load(open(_ROOT+"/../qualis_chat/count_vect.b", "rb"))
-        self.tf_transformer = pickle.load(open(_ROOT+'/../qualis_chat/tf_transformer.b','rb'))
+        
+        self.area_model = pickle.load(open(os.path.join(_ROOT,"..", "area_model.b"), 'rb'))
+        self.count_vect = pickle.load(open(os.path.join(_ROOT,"..", "count_vect.b"), 'rb'))
+        self.tf_transformer = pickle.load(open(os.path.join(_ROOT,"..", "tf_transformer.b"), 'rb'))
 
-        self.codes2Name = pickle.load(open(_ROOT+'/../qualis_chat/rasa/codes2Name.b','rb'))
-        self.quadrien = pd.read_csv(_ROOT+'/../qualis_chat/rasa/quadrien.csv')
-
+        self.codes2Name = pickle.load(open(os.path.join(_ROOT, "codes2Name.b"), 'rb'))
+        self.quadrien = pd.read_csv(os.path.join(_ROOT, "quadrien.csv"))
 
     
     def get_answer(self,message):

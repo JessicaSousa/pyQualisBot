@@ -2,8 +2,13 @@ import nltk
 from collections import defaultdict
 from nltk.stem.snowball import EnglishStemmer  # Assuming we're working with English
 import pickle
+import os
+
 nltk.download('stopwords')
 nltk.download('punkt')
+
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+
 class Index:
     """ Inverted index datastructure """
  
@@ -50,16 +55,13 @@ class Index:
         self.documents[self.__unique_id] = document
         self.__unique_id += 1 
            
-    def save(self, fileName):
-        """Save thing to a file."""
-        f = open(fileName,"wb")
-        pickle.dump(self,f)
-        f.close()
-    def load(fileName):
-        """Return a thing loaded from a file."""
-        f = open(fileName,"rb")
-        obj = pickle.load(f)
-        f.close()
-        return obj
-    # make load a static method
-    load = staticmethod(load)       
+
+
+def save_inverted_indexes(data):
+    write_file = open(os.path.join(_ROOT, "inverted_indexes.b"), 'wb')
+    pickle.dump(data, write_file)
+
+
+def load_inverted_indexes():
+    read_file = open(os.path.join(_ROOT, "inverted_indexes.b"), 'rb')
+    return pickle.load(read_file)
