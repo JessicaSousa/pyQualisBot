@@ -14,3 +14,9 @@ class Strings:
         "Para selecionar o evento de classificação use o comando /event.\n"
         "Consultas podem ser feitas apenas colocando o nome da área desejada."
     )
+
+    QUADRIEN = "PERIÓDICOS QUADRIÊNIO 2013-2016"
+
+    TRIEN = "PERIÓDICOS TRIÊNIO 2010-2012"
+
+    EVENT_SELECT = "Selecione o evento de classificação desejado:"

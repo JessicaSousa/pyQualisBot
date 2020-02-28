@@ -106,26 +106,37 @@ class ChatQualisBot:
         #print(result)
         entities = result['entities']
         print(entities)
+        state=0
+        area_names=[]
+        search_terms=[]
+
+        area_count=0
+        termo_count=0
         if(len(entities)>0):
             for ent in entities:
                 if(ent['entity']=='area'):
-                    area_name = ent['value']
+                    area_names.append((ent['value'],ent['confidence']))
+                    area_count+=1
                 if(ent['entity']=='termo'):
-                    search_term = ent['value']
-                    
-            #print('area_name: ',area_name)
-            #print('search_term: ',search_term)
-
+                    search_terms.append((ent['value'],ent['confidence']))
+                    termo_count+=1
+            if(area_count>0 and termo_count==0):
+                best_area_name =''
+                best_area_conf = -9990
+                for name in area_names:
+                    if name[1]>best_area_conf:
+                        best_area_conf = name[1]
+                        best_area_name = name[0]
+                area_name = get_area_name_correct(best_area_name,self.area_model,self.codes2Name,self.count_vect,self.tf_transformer)
+                #So tem area, n tem termos. Retorna a tabela da area de avaliacao
+                return 1,self.quadrien[self.quadrien["Área de Avaliação"]==area_name[0]]
+            area_name = area_names[0][0]
             area_name = get_area_name_correct(area_name,self.area_model,self.codes2Name,self.count_vect,self.tf_transformer)
-            #print("correct area name: ",area_name)
-            #print(quadrien)
-            #print(area_name," Journals: ")
-            #print(self.quadrien[self.quadrien["Área de Avaliação"]==area_name[0]])
-            #print(inverted_indexes['MATEMÁTICA / PROBABILIDADE E ESTATÍSTICA          '].lookup('graphics'))
             try:
-                #print(self.inverted_indexes[area_name[0]].lookup(search_term))
-                return self.inverted_indexes[area_name[0]].lookup(search_term)
+                #tem area e termo
+                search_term = search_terms[0][0]
+                return 0,self.inverted_indexes[area_name[0]].lookup(search_term)
             except TypeError:
                 print("term not found in search!")
-            return None
+            return  2,None
             
