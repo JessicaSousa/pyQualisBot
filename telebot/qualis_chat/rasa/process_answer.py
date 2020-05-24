@@ -79,9 +79,7 @@ class ChatQualisBot:
         #rasa.nlu.run.run_cmdline(nlu_model)
         print(nlu_model)
         self.model_path = nlu_model
-        #PROBLEMA: TA ENTRANDO /tmp/tmppai8j3bb/ AO INVES DE /tmp/tmppai8j3bb/nlu/   
-        #COMO?????
-        self.interpreter = Interpreter.load(model_path, None)
+        self.interpreter = Interpreter.load(self.model_path, None)
         self.regex_interpreter = RegexInterpreter()
 
         print_success("NLU model loaded. Type a message and press enter to parse it.")
